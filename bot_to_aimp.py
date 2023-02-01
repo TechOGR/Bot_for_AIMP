@@ -11,6 +11,7 @@ import pyttsx3 as ttx
 # From
 from plyer import notification
 from threading import Thread
+from getpass import getuser
 from PyQt5.QtWidgets import (
     QMainWindow,
     QLabel, 
@@ -21,9 +22,15 @@ from PyQt5.QtWidgets import (
     QMessageBox,
     QApplication
 )
-from PyQt5.QtGui import QIcon, QColor, QPixmap
-from PyQt5.QtCore import Qt, QRect
-from getpass import getuser
+from PyQt5.QtGui import (
+    QIcon,
+    QColor,
+    QPixmap
+)
+from PyQt5.QtCore import (
+    Qt,
+    QRect
+)
 
 # Clase Encargada de manipular el AIMP
 class AutoBot:
@@ -174,10 +181,13 @@ class Ventana(QMainWindow):
             self.aimp_closed()
             sys.exit()
 
+        #Clase para Mensajes Emergentes
         self.sms = Mensajes_Emergentes()
 
+        #Obteniendo el nombre de usuario de la PC
         self.nombre_usuario = getuser()
 
+        ########### Textos para decir al Inicio ###############
         self.primer_texto = f"""Hola, {self.nombre_usuario}, Primero, para evitar problemas espere a que yo termine de hablar,
         segundo, cuando yo hable, el foco de su ventana debe estar en este programa,
         tercero, fui creado por..."""
@@ -187,6 +197,7 @@ class Ventana(QMainWindow):
         Puede ver las opciones con lo que escribiré allí,
         mantenga el foco en esta ventana,
         por ahora me voy, Guapo, pero luego nos veremos de nuevo."""
+        ########################################################
 
         #Bot que actua
         self.bot = AutoBot();
@@ -210,8 +221,10 @@ class Ventana(QMainWindow):
         self.show_notify.daemon = True
         self.show_notify.start()
         
+        # Creando el codigo QR con la IP de la PC
         self.crear_qr()
         
+        # Valor por defecto para cada cosa a Decir
         self.texto = ""
 
     # Metodo de inicializacion de los componentes graficos
@@ -458,27 +471,27 @@ class Ventana(QMainWindow):
                 devic = devi.replace("$", "")
                 device = devic.replace("modelo_device"," ")
                 #print(device)
-                esto = ""
+                var_tmp = ""
                 for i, v in enumerate(device):
                     if i == 0:
                         continue
                     else:
-                        esto += v
-                esto2 = esto.split()
-                #print(esto2)
-                if len(esto) > 0 and len(esto2) == 2:
+                        var_tmp += v
+                element_from_model = var_tmp.split()
+                #print(element_from_model)
+                if len(var_tmp) > 0 and len(element_from_model) == 2:
                     try:
-                        self.bot_audio.say(f"Dispositivo..., {esto2[1]} {esto2[0]} .Conectado")
+                        self.bot_audio.say(f"Dispositivo..., {element_from_model[1]} {element_from_model[0]} .Conectado")
                         self.bot_audio.runAndWait()
                     except RuntimeError:
-                        self.bot_audio.say(f"Dispositivo..., {esto2[1]} {esto2[0]} .Conectado")
+                        self.bot_audio.say(f"Dispositivo..., {element_from_model[1]} {element_from_model[0]} .Conectado")
                         self.bot_audio.runAndWait()
-                elif len(esto) > 0 and "Xiaomi" in esto:
+                elif len(var_tmp) > 0 and "Xiaomi" in var_tmp:
                     try:
-                        self.bot_audio.say(f"Dispositivo..., {esto2[2]} {esto2[0]} {esto2[1]}. Conectado...")
+                        self.bot_audio.say(f"Dispositivo..., {element_from_model[2]} {element_from_model[0]} {element_from_model[1]}. Conectado...")
                         self.bot_audio.runAndWait()
                     except RuntimeError:
-                        self.bot_audio.say(f"Dispositivo..., {esto2[2]} {esto2[0]} {esto2[1]}. Conectado...")
+                        self.bot_audio.say(f"Dispositivo..., {element_from_model[2]} {element_from_model[0]} {element_from_model[1]}. Conectado...")
                         self.bot_audio.runAndWait()
             else:
                 continue
@@ -551,7 +564,7 @@ class Ventana(QMainWindow):
             self.cosas_para_decir("Por favor, establezca una velocidad. para mas ayuda escriba en el cuadro de búsqueda, '$help', lo mismo que le dije al inicio")
         elif self.txt_line == "$help":
             self.cosas_para_decir("Abriendo Panel de Ayuda")
-            seting = Settings(self.direccion)
+            seting = Help(self.direccion)
             seting.__init__(self.direccion)
             seting.show()
         elif self.txt_line == "$lento":
@@ -580,13 +593,13 @@ class Ventana(QMainWindow):
 
 
 # Clase encargada de Mostrar la Ayuda y los comandos
-class Settings(QDialog):
+class Help(QDialog):
 
     def __init__(self,direccion,*args,**kwargs):
-        super(Settings,self).__init__(*args, **kwargs)
+        super(Help,self).__init__(*args, **kwargs)
         icono = QIcon("D:/Fotos/Imagenes/Mi_Logo.png")
         self.setFixedSize(300,650)
-        self.setWindowTitle("Settings")
+        self.setWindowTitle("Help")
         self.setWindowIcon(icono)
         self.setVisible(True)
         self.direction = direccion
@@ -607,7 +620,7 @@ class Settings(QDialog):
             font-style: normal;
         }"""
 
-        #Label_Title_Settings
+        #Label_Title_Help
         self.label_id = QLabel(parent=self)
         self.label_id.setGeometry(50,10,250,70)
         self.label_id.setText("Velocidades")
