@@ -5,5 +5,5 @@ Controla la reproduccion de audio de AIMP en Windows con este BOT. Ya sea desde 
 # Funcionalidad
 Cuando lo prueben ya Veran
 
-# Programación Estructurada y POO
+# Puro Python
 Disculpen por solo ser un archivo, es que solo tengo un monitor y muchas cosas abiertas
