@@ -9,7 +9,7 @@ import os, sys, time, segno, pyaimp, socket
 import pyautogui as gui
 import pyttsx3 as ttx
 # From
-from plyer import notification
+from winotify import Notification, Notifier, audio
 from threading import Thread
 from getpass import getuser
 from PyQt5.QtWidgets import (
@@ -104,22 +104,25 @@ class AutoBot:
         info_song = list(self.aimp.get_current_track_info().values())
         titulo = info_song[12]
         
+        notify_stoped = Notification (
+            app_id = "Bot For AIMP",
+            title = "Detenido",
+            msg = "Subscribete a mi canal de YouTube 'TechOGR'",
+            icon = "D:\Fotos\Imagenes\Mi_Logo.ico"
+        )
+        notify_stoped.set_audio(audio.Default,loop=False)
+        
+        notify_play = Notification (
+            app_id = "Bot For AIMP",
+            title = "Reproduciendo...",
+            msg = titulo,
+            icon = "D:\Fotos\Imagenes\Mi_Logo.ico"
+        )
+        notify_play.set_audio(audio.Default, loop=False)
         if titulo == "":
-            notification.notify(
-                title = "Detenido",
-                app_name = "Bot",
-                message = "Subscribete a mi canal de YouTube 'TechOGR'",
-                timeout = 10,
-                app_icon = "D:/Fotos/Imagenes/Mi_Logo.ico"
-            )
+            notify_stoped.show()
         else:
-            notification.notify(
-                title = "Reproduciendo...",
-                app_name = "Bot",
-                message = titulo,
-                timeout = 2,
-                app_icon = "D:/Fotos/Imagenes/Mi_Logo.ico"
-            )
+            notify_play.show()
 
     # Metodo para buscar la musica
     def abrir_musica(self,nombre,velocidad):
@@ -213,7 +216,7 @@ class Ventana(QMainWindow):
         #Creando e Iniciando Hilos
         self.create_server = Thread(target=self.servidor)
         self.say_intro = Thread(target=self.decir_intro)
-        self.show_notify = Thread(target=self.create_notify, args=["Bienvenida","Iniciando Software"])
+        self.show_notify = Thread(target=self.create_notify, args=["Bienvenido","Iniciando Software"])
         self.create_server.daemon = True
         self.create_server.start()
         self.say_intro.daemon = True
@@ -390,13 +393,15 @@ class Ventana(QMainWindow):
 
     # Metodo para crear Notificaciones
     def create_notify(self,title,sms):
-        notification.notify(
+        init_notify = Notification (
+            app_id = "Bot For Aimp",
             title = title,
-            app_name = "Bot",
-            message = sms,
-            timeout = 1,
-            app_icon = "D:/Fotos/Imagenes/Mi_Logo.ico"
+            duration="short",
+            msg = sms,
+            icon = "D:\Fotos\Imagenes\Mi_Logo.ico"
         )
+        init_notify.set_audio(audio.Default,loop=False)
+        init_notify.show()
         
     # Metodo que crea el QR-Code
     def crear_qr(self):
