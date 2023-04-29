@@ -108,7 +108,7 @@ class AutoBot:
             app_id = "Bot For AIMP",
             title = "Detenido",
             msg = "Subscribete a mi canal de YouTube 'TechOGR'",
-            icon = "D:\Fotos\Imagenes\Mi_Logo.ico"
+            icon = "D:\Fotos\Imagenes\logo_app.png.png"
         )
         notify_stoped.set_audio(audio.Default,loop=False)
         
@@ -116,7 +116,7 @@ class AutoBot:
             app_id = "Bot For AIMP",
             title = "Reproduciendo...",
             msg = titulo,
-            icon = "D:\Fotos\Imagenes\Mi_Logo.ico"
+            icon = "D:\Fotos\Imagenes\logo_app.png.png"
         )
         notify_play.set_audio(audio.Default, loop=False)
         if titulo == "":
@@ -161,7 +161,9 @@ class AutoBot:
 class Ventana(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
-        icono = QIcon("D:/Fotos/Imagenes/Mi_Logo.png")
+        self.full_path_icon = f"{os.getcwd()}\\img\\logo_app.png"
+        print(self.full_path_icon)
+        icono = QIcon(self.full_path_icon)
         self.velocidad = 3
         self.setObjectName("Frame")
         self.setFixedSize(500,130)
@@ -277,6 +279,7 @@ class Ventana(QMainWindow):
 
     # Estilos para los componentes graficos
     def estilos(self):
+        
         self.btn_shadow = QGraphicsDropShadowEffect()
         self.btn_shadow.setBlurRadius(25)
         self.btn_shadow.setOffset(0,0)
@@ -398,7 +401,7 @@ class Ventana(QMainWindow):
             title = title,
             duration="short",
             msg = sms,
-            icon = "D:\Fotos\Imagenes\Mi_Logo.ico"
+            icon = self.full_path_icon
         )
         init_notify.set_audio(audio.Default,loop=False)
         init_notify.show()
@@ -599,10 +602,11 @@ class Ventana(QMainWindow):
 
 # Clase encargada de Mostrar la Ayuda y los comandos
 class Help(QDialog):
-
+    
     def __init__(self,direccion,*args,**kwargs):
         super(Help,self).__init__(*args, **kwargs)
-        icono = QIcon("D:/Fotos/Imagenes/Mi_Logo.png")
+        self.full_path_icon = f"{os.getcwd()}\\img\\logo_app.png"
+        icono = QIcon(self.full_path_icon)
         self.setFixedSize(300,650)
         self.setWindowTitle("Help")
         self.setWindowIcon(icono)
