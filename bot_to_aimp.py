@@ -185,6 +185,7 @@ class Ventana(QMainWindow):
         except:
             self.aimp_closed()
             sys.exit()
+            
 
         #Clase para Mensajes Emergentes
         self.sms = Mensajes_Emergentes()
