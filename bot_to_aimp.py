@@ -9,7 +9,7 @@ import os, sys, time, segno, pyaimp, socket
 import pyautogui as gui
 import pyttsx3 as ttx
 # From
-from winotify import Notification, Notifier, audio
+from winotify import Notification, audio
 from threading import Thread
 from getpass import getuser
 from PyQt5.QtWidgets import (
@@ -30,6 +30,12 @@ from PyQt5.QtGui import (
 from PyQt5.QtCore import (
     Qt,
     QRect
+)
+from os.path import (
+    join
+)
+from os import (
+    getcwd
 )
 
 # Clase Encargada de manipular el AIMP
@@ -107,18 +113,27 @@ class AutoBot:
         notify_stoped = Notification (
             app_id = "Bot For AIMP",
             title = "Detenido",
-            msg = "Subscribete a mi canal de YouTube 'TechOGR'",
-            icon = "D:\Fotos\Imagenes\logo_app.png.png"
+            msg = "Subscribete a mi canal de YouTube 'Onel Crack'",
+            icon = join(getcwd(), "img", "logo_app.png")
         )
+        notify_stoped.add_actions(label="Youtube", launch="https://www.youtube.com/@OnelCrack")
+        notify_stoped.add_actions(label="GitHub", launch="https://www.github.com/TechOGR/")
+        notify_stoped.add_actions(label="Facebook", launch="https://www.facebook.com/profile.php?id=100092376152191")
+        notify_stoped.add_actions(label="Instagram", launch="https://www.instagram.com/onel_crack/")
         notify_stoped.set_audio(audio.Default,loop=False)
         
         notify_play = Notification (
             app_id = "Bot For AIMP",
             title = "Reproduciendo...",
             msg = titulo,
-            icon = "D:\Fotos\Imagenes\logo_app.png.png"
+            icon = join(getcwd(), "img", "logo_app.png")
         )
+        notify_play.add_actions(label="Youtube", launch="https://www.youtube.com/@OnelCrack")
+        notify_play.add_actions(label="GitHub", launch="https://www.github.com/TechOGR/")
+        notify_play.add_actions(label="Facebook", launch="https://www.facebook.com/profile.php?id=100092376152191")
+        notify_play.add_actions(label="Instagram", launch="https://www.instagram.com/onel_crack/")
         notify_play.set_audio(audio.Default, loop=False)
+        
         if titulo == "":
             notify_stoped.show()
         else:
@@ -374,7 +389,7 @@ class Ventana(QMainWindow):
         else:
             self.bot_audio.say(self.primer_texto)
             self.bot_audio.runAndWait()
-            gui.write("TechOGR",0.3)
+            gui.write("Onel Crack",0.3)
             self.bot_audio.say(self.segundo_texto)
             self.bot_audio.runAndWait()
             self.txt_to_find.setText("")
